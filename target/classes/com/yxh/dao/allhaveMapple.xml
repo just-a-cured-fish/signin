@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxh.mapper.allhaveMapper">
+
+
+  
+  
+      <select id="selectdan" resultType="com.yxh.pojo.allhave" >
+    select name,value2 as value from allhave where name=#{name};
+  </select>
+  
+    <select id="selectvalue" resultType="com.yxh.pojo.allhave" >
+    select name,value from allhave;
+  </select>
+    <select id="selectvaluetoday" resultType="com.yxh.pojo.allhave" >
+    select name,value2 as value from allhave;
+  </select>
+ <update id="updateallhave"  parameterType="com.yxh.pojo.allhave">
+   update allhave
+    <set>
+      <if test="value != null">value=#{value},</if>
+     <if test="value2 != null">value2=#{value2},</if>
+    </set>
+ 	 where name=#{name}
+  </update>
+  
+
+</mapper>
+

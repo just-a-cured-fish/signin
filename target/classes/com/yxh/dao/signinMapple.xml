@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxh.mapper.signinMapper">
+
+
+  
+  
+  
+    <insert id="insertinto"  >
+   insert into signin values(default,#{pic},#{address},#{time},#{studentid},#{istrue},#{thesignid},#{about},#{temp},#{lat},#{lng},#{istrue2},#{istrue3},#{dan});
+  </insert>
+	 <select id="selecttrue" resultType="com.yxh.pojo.signin" >
+   select si.*,st.sname from signin si inner join student st where thesignid=#{thesignid} and sid=studentid and istrue=1 
+  </select>
+   <select id="selectnottrue" resultType="com.yxh.pojo.signin" >
+   select si.*,st.sname from signin si inner join student st where thesignid=#{thesignid} and sid=studentid and istrue!=1 
+  </select>
+  <select id="selectnottrue2" resultType="com.yxh.pojo.signin" >
+   select si.*,st.sname from signin si inner join student st where thesignid=#{thesignid} and sid=studentid and istrue2=0 
+  </select>
+  <select id="selectnottrue3" resultType="com.yxh.pojo.signin" >
+   select si.*,st.sname from signin si inner join student st where thesignid=#{thesignid} and sid=studentid and istrue3=0 
+  </select>
+  <select id="selectchoose" resultType="com.yxh.pojo.signin" >
+   select si.*,st.sname from signin si inner join student st where thesignid=#{thesignid} and sid=studentid 
+    <if test="cid!= null">and st.sclass=#{cid}</if>
+    <if test="istrue!= null">and istrue=#{istrue}</if>
+      <if test="istrue2!= null">and istrue2=#{istrue2}</if>
+      <if test="istrue3!= null">and istrue3=#{istrue3}</if>
+  </select>
+  <select id="selectstunot" resultType="com.yxh.pojo.Student">
+SELECT st.* from student st inner join thesign si where st.sclass=si.cid and si.thesignid=#{thesignid} and st.sid not in(select studentid from signin si inner join student st inner join class cl where  si.studentid=st.sid and st.sclass=cl.cid  and thesignid=#{thesignid}) ;
+
+</select>
+
+</mapper>
+

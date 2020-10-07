@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxh.mapper.thesignMapper">
+
+
+  
+  
+    <select id="selectbythesignid" resultType="com.yxh.pojo.thesign" >
+    select t.tid,t.cid,t.startday,t.endday,t.how,t.title,t.content,t.startday,t.endday,t.howface,t.howphoto,t.address,t.lat,t.lng,t.ques,t.samekey,s.cname from thesign t inner join class s 
+  <where>
+      <if test="thesignid != null">  thesignid=#{thesignid} </if>
+  and t.cid=s.cid ;
+  </where> 
+  </select>
+    
+  <insert id="insertthesignmush">
+  insert into thesign (thesignid,tid,cid,how,title,content,startday,endday,howface,howphoto,address,lat,lng,ques,samekey)  values
+  <foreach item="item" collection="arg0" separator=",">
+    (default,#{arg1.tid},#{arg1.cid},#{arg1.how},#{arg1.title},#{arg1.content},#{item.startday},#{item.endday},#{arg1.howface},#{arg1.howphoto},#{arg1.address},#{arg1.lat},#{arg1.lng},#{arg1.ques},#{arg1.samekey})
+  </foreach>
+</insert>
+    <insert id="insertthesign"  >
+   insert into thesign values(default,#{tid},#{cid},#{how},#{title},#{content},#{startday},#{endday},#{howface},#{howphoto},#{address},#{lat},#{lng},#{ques},#{samekey});
+  </insert>
+ <select id="selectbyid" resultType="com.yxh.pojo.thesign" >
+    select  t.thesignid,t.tid,t.cid,t.startday,t.endday,t.how,t.title,t.content,t.startday,t.endday,t.howface,t.howphoto,t.address,t.lat,t.lng,t.ques,s.cname,te.tname from thesign t inner join class s inner join teacher te
+  <where>
+  	 <if test="tid != null">t.tid=#{tid} </if>
+      <if test="cid != null"> and t.cid=#{cid} </if>
+  and  t.tid=s.tid and s.tid=te.tid  and t.cid=s.cid order by thesignid desc;
+  </where> 
+    </select>
+     <select id="selectend" resultType="com.yxh.pojo.thesign" >
+    select  t.thesignid,t.tid,t.cid,t.startday,t.endday,t.how,t.title,t.content,t.startday,t.endday,t.howface,t.howphoto,t.address,t.lat,t.lng,t.ques,s.cname,te.tname from thesign t inner join class s inner join teacher te
+  <where>
+  	 <if test="tid != null">t.tid=#{tid} </if>
+      <if test="cid != null"> and t.cid=#{cid} </if>
+  and  t.tid=s.tid and s.tid=te.tid  and t.cid=s.cid and t.endday &lt; Now() order by thesignid desc;
+  </where> 
+      </select>
+     <select id="selectnotend" resultType="com.yxh.pojo.thesign" >
+    select  t.thesignid,t.tid,t.cid,t.startday,t.endday,t.how,t.title,t.content,t.startday,t.endday,t.howface,t.howphoto,t.address,t.lat,t.lng,t.ques,s.cname,te.tname from thesign t inner join class s inner join teacher te
+  <where>
+  	 <if test="tid != null">t.tid=#{tid} </if>
+      <if test="cid != null"> and t.cid=#{cid} </if>
+  and  t.tid=s.tid and s.tid=te.tid  and t.cid=s.cid and t.endday > Now() and t.startday &lt; Now() order by thesignid desc;
+  </where> 
+    </select>
+   <select id="selectbysamekey" resultType="int" >
+    select thesignid from thesign where samekey=#{samekey};
+  
+  </select>
+   <select id="selectbyid2" resultType="com.yxh.pojo.thesign" >
+    select t.thesignid,t.tid,t.cid,t.startday,t.endday,t.how,t.title,t.content,t.startday,t.endday,t.howface,t.howphoto,t.address,t.lat,t.lng,t.ques,s.cname from thesign t inner join class s 
+  <where>
+      <if test="cid != null">  t.cid=#{cid} </if>
+  and t.tid=s.tid ;
+  </where> 
+  </select>
+
+<select id="selectnotsign" resultType="com.yxh.pojo.thesign">
+
+select  t.thesignid,t.tid,t.cid,t.startday,t.endday,t.how,t.title,t.content,t.startday,t.endday,t.howface,t.howphoto,t.address,t.lat,t.lng,t.ques,s.cname,te.tname from thesign t inner join class s  inner join teacher te where t.thesignid not in(select thesignid from signin where studentid=#{sid}) 
+and t.cid=#{sclass} and unix_timestamp(t.startday) &lt;= unix_timestamp(NOW()) and unix_timestamp(t.endday) >= unix_timestamp(NOW()) 
+and t.tid=s.tid and s.tid=te.tid  and t.cid=s.cid order by thesignid desc;
+</select>
+<select id="selectendis" resultType="com.yxh.pojo.thesign">
+
+
+select  t.thesignid,t.tid,t.cid,t.startday,t.endday,t.how,t.title,t.content,t.startday,t.endday,t.howface,t.howphoto,t.address,t.lat,t.lng,t.ques,s.cname,te.tname from thesign t inner join class s inner join teacher te where   t.thesignid   in(select thesignid from signin where studentid=#{sid})
+and t.cid=#{sclass} and  unix_timestamp( NOW( ) ) > unix_timestamp( t.endday) 
+and t.tid=s.tid and s.tid=te.tid  and t.cid=s.cid order by thesignid desc
+limit 7;
+
+</select>
+<select id="selectendnot" resultType="com.yxh.pojo.thesign">
+select  t.thesignid,t.tid,t.cid,t.startday,t.endday,t.how,t.title,t.content,t.startday,t.endday,t.howface,t.howphoto,t.address,t.lat,t.lng,t.ques,s.cname,te.tname from thesign t inner join class s inner join teacher te where   t.thesignid  not in(select thesignid from signin where studentid=#{sid})
+and t.cid=#{sclass} and unix_timestamp( NOW( ) ) > unix_timestamp( t.endday) 
+and t.tid=s.tid and s.tid=te.tid  and t.cid=s.cid order by thesignid desc
+limit 7;
+</select>
+<select id="selectsame" resultType="com.yxh.pojo.thesign">
+select te.tname,th.tid,th.how,th.title,th.howface,th.howphoto,th.address,th.lat,th.lng,th.ques,th.samekey,th.content,min(th.startday) as startday,max(th.endday) as endday from thesign th inner join teacher te 
+where th.tid=#{tid} and th.tid=te.tid GROUP BY samekey order by startday desc;
+</select>
+</mapper>
+
+

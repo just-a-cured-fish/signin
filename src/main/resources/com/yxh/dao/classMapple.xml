@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxh.mapper.classMapper">
+
+<select id="selectAuthor"  resultType="int">
+  SELECT count(sid) as amount FROM student WHERE sclass = #{cid}
+</select>
+
+
+  <resultMap id="blogResult" type="com.yxh.pojo.class1">
+   <result property="cid" column="cid"/>
+      <result property="cmajor" column="cmajor"/>
+       <result property="cname" column="cname"/>
+       <result property="tid" column="tid"/>
+  <association property="amount" column="cid"  select="selectAuthor"/>
+</resultMap>
+
+
+
+
+  
+   <select id="selectbyid"    resultMap="blogResult">
+    select cid,cmajor,cname,tid from class
+    <where>
+    <if test="tid != null">tid=#{tid}</if>
+      <if test="cid != null">cid=#{cid}</if>
+      </where> 
+    
+  </select>
+  
+  
+    <insert id="insertclass"  >
+   insert into class values(#{cid},#{cmajor},#{cname},#{tid});
+  </insert>
+
+
+
+</mapper>
+

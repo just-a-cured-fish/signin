@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxh.mapper.teacherMapper">
+
+
+  <resultMap id="blogResult" type="com.yxh.pojo.Teacher">
+   <result property="tname" column="tname"/>
+  <collection property="class1" column="tid"  select="selectAuthor"/>
+  
+</resultMap>
+  <resultMap id="classResult" type="com.yxh.pojo.class1">
+   <result property="cid" column="cid"/>
+  
+  <collection property="student"  column="cid"  select="selectPostsForBlog"/>
+</resultMap>
+<select id="selectBlog" resultMap="blogResult">
+ select tid,tname,tclass from teacher where tid=#{tid};
+</select>
+
+<select id="selectPostsForBlog" resultType="com.yxh.pojo.Student">
+  SELECT * FROM student WHERE sclass = #{cid}
+</select>
+  <select id="selectAuthor"  resultMap="classResult">
+  SELECT *  FROM class WHERE tid = #{tid}
+</select>
+ <select id="selectbyid" resultType="com.yxh.pojo.Teacher" >
+    select tid,tname,tclass from teacher where tid=#{tid};
+  </select>
+   <insert id="insertteacher"  parameterType="com.yxh.pojo.Teacher">
+   	insert into teacher(tid) value(#{tid});
+  </insert>
+  
+  
+   <update id="updateteacher"  parameterType="com.yxh.pojo.Teacher">
+   update teacher
+    <set>
+      <if test="tname != null">tname=#{tname},</if>
+ 		<if test="tclass != null">tclass=#{tclass},</if>
+    </set>
+  where tid=#{tid}
+  </update>
+</mapper>
+

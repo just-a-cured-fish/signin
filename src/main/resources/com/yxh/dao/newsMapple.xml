@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxh.mapper.newsMapper">
+
+
+  
+  <insert id="insertnews">
+  insert into news (id,title, pubDateStr, summary) values
+  <foreach item="item" collection="list" separator=",">
+    (default,#{item.title}, #{item.pubDateStr}, #{item.summary})
+  </foreach>
+</insert>
+  
+	<select id="selectvalue" resultType="com.yxh.pojo.news" >
+    select pubDateStr,title,summary from news order by id desc limit 5 ;
+  </select>
+
+</mapper>
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+    
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://123.57.89.200:3306/signin?serverTimezone=Asia/Shanghai&amp;characterEncoding=utf-8"/>
+    <property name="username" value="root"/>
+    <property name="password" value="1462342929yxh."/>
+    </bean>
+    
+    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	  <property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		</bean>
+	
+<!--注册sqlSessionTemplate , 关联sqlSessionFactory-->
+<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+   <!--利用构造器注入-->
+   <constructor-arg index="0" ref="sqlSessionFactory"/>
+</bean>
+  	
+  	<bean id="userMapper" class="com.yxh.mapper.UserMapperImpl">
+  	<property name="sqlSession" ref="sqlSession"/>
+  	</bean>
+  	<bean id="StudentMapper" class="com.yxh.mapper.StudentMapperlmpl">
+  	<property name="sqlSession" ref="sqlSession"/>
+  	</bean>
+  	<bean id="allhaveMapper" class="com.yxh.mapper.allhaveMapperImpl">
+  	<property name="sqlSession" ref="sqlSession"/>
+  	</bean>
+  		<bean id="newsMapper" class="com.yxh.mapper.newsMapperImpl">
+  	<property name="sqlSession" ref="sqlSession"/>
+  	</bean>
+  		<bean id="signinMapper" class="com.yxh.mapper.signinMapperImpl">
+  	<property name="sqlSession" ref="sqlSession"/>
+  	</bean>
+  	 	<bean id="teacherMapper" class="com.yxh.mapper.teacherMapperImpl">
+  	<property name="sqlSession" ref="sqlSession"/>
+  	</bean>
+  	  	 	<bean id="thesignMapper" class="com.yxh.mapper.thesignMapperImpl">
+  	<property name="sqlSession" ref="sqlSession"/>
+  	</bean>
+  	  	 	<bean id="classMapper" class="com.yxh.mapper.classMapperImpl">
+  	<property name="sqlSession" ref="sqlSession"/>
+  	</bean>
+</beans>

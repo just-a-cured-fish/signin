@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxh.mapper.StudentMapper">
+
+
+  
+  
+   <select id="selectbysclass" resultType="com.yxh.pojo.Student" >
+    select sid,sname,ssid,sphone,ssex,semail,sdor,sfamphone,sclass,sphoto from student where sclass=#{cid};
+  </select>
+  
+ <select id="selectbyid" resultType="com.yxh.pojo.Student" >
+    select sid,sname,ssid,sphone,ssex,semail,sdor,sfamphone,sclass,sphoto from student where sid=#{sid};
+  </select>
+   <insert id="insertstudent"  parameterType="com.yxh.pojo.Student">
+   	insert into student(sid) value(#{sid});
+  </insert>
+  
+  	 <select id="selectwhere14" resultType="com.yxh.pojo.signin" >
+   select * from signin where studentid=#{sid} order by id desc limit 14
+  </select>
+   <update id="updatestudent"  parameterType="com.yxh.pojo.Student">
+   update student
+    <set>
+      <if test="sname != null">sname=#{sname},</if>
+      <if test="ssid != null">ssid=#{ssid},</if>
+      <if test="sphone != null">sphone=#{sphone},</if>
+      <if test="ssex != null">ssex=#{ssex},</if>
+      <if test="semail != null">semail=#{semail},</if>
+      <if test="sdor != null">sdor=#{sdor},</if>
+      <if test="sfamphone != null">sfamphone =#{sfamphone},</if>
+      <if test="sclass != null">sclass=#{sclass}</if>
+       <if test="sphoto != null">sphoto=#{sphoto}</if>
+    </set>
+  where sid=#{sid}
+  </update>
+
+</mapper>
+
